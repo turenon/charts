@@ -7,7 +7,7 @@ tars:
   data: /data/tars-data
   image: tarscloud/framework:v2.4.1
   replicas: 2
-  host: domain.com
+  host: test.101nd.cn
   port: 80
   strict: "false"
   pullPolicy: IfNotPresent
