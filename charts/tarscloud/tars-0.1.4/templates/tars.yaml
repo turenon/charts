@@ -112,3 +112,86 @@ spec:
           hostPath:
             path: {{.Values.tars.data}}/{{.Values.tars.namespace}}
             type: DirectoryOrCreate
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: tars-node-svc
+spec:
+  ports:
+  - port: 19385
+    protocol: TCP
+    targetPort: 19853
+  selector:
+    app: tars-node
+  clusterIP: None
+  type: ClusterIP
+
+---
+
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: tars-node
+spec:
+  replicas: {{.Values.tarsnode.replicas}} 
+  serviceName: tars-node-svc
+  selector:
+    matchLabels:
+      app: tars-node
+  template:
+    metadata:
+      labels:
+        app: tars-node
+    spec:
+      restartPolicy: Always
+      containers:
+        - name: tars
+          image: {{.Values.tarsnode.image}} 
+          imagePullPolicy: {{ .Values.tarsnode.pullPolicy }}
+          resources:
+            {{- toYaml .Values.tarsnode.resources | nindent 12 }}
+          command: ["sh", "-c"]
+          args: 
+          - mkdir -p /data/log/${POD_NAME}/app_log;
+            mkdir -p /data/log/${POD_NAME}/tarsnode-data;
+            mkdir -p /data/log/${POD_NAME}/remote_app_log;
+
+            rm -rf /data/tars;mkdir -p /data/tars;
+
+            if [ ! -f "/data/tars/app_log" ]; then
+              ln -s  /data/log/${POD_NAME}/app_log /data/tars/app_log;
+            fi
+
+            if [ ! -f "/data/tars/tarsnode-data" ]; then
+              ln -s  /data/log/${POD_NAME}/tarsnode-data /data/tars/tarsnode-data;
+            fi
+
+            if [ ! -f "/data/tars/remote_app_log" ]; then
+              ln -s  /data/log/${POD_NAME}/remote_app_log /data/tars/remote_app_log;
+            fi
+
+            export DOMAIN="${POD_NAME}.tars-node-svc";
+            export WEB_HOST=http://tars-0.tars-svc:3000;
+
+            /sbin/entrypoint.sh
+          env:
+          - name: POD_NAME
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.name
+          volumeMounts:
+          - name: localtime
+            mountPath: /etc/localtime
+          - name: data
+            mountPath: /data/log
+      volumes:
+        - name: localtime
+          hostPath:
+            path: /etc/localtime 
+        - name: data
+          hostPath:
+            path: {{.Values.tars.data}}/{{.Values.tars.namespace}}
+            type: DirectoryOrCreate
