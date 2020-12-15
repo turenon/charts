@@ -1,23 +1,69 @@
 questions:
+
+# host
+- variable: host
+  default: domain.com
+  label: tars ingress host
+  type: string
+  group: host
+
 # tars
 - variable: tars.replicas
   default: 2
   label: Specify the number of Tars Master Pods
   type: int
+  group: tars
 - variable: tarsnode.replicas
   default: 3
   label: Specify the number of Tarsnode Pods
   type: int
+  group: tars
 
-# ingress
-- variable: host
-  default: domain.com
-  label: tars ingress host
-  type: string
 
 # mysql
+- variable: mysql.enabled
+  default: false
+  description: "Enable mysql"
+  type: boolean
+  required: true
+  label: Enable mysql Containers
+  show_subquestion_if: true
+  group: "mysql Settings"
+  subquestions:
+  - variable: password
+    default: ""
+    required: true
+    description: "password will be auto-generated if not specified"
+    type: password
+    label: mysql root Password
+  - variable: metrics.enabled
+    default: false
+    description: "Start a side-car prometheus exporter"
+    label: Enable Mysql Metrics Exporter
+    type: boolean
+    group: "mysql Settings"
+
+
+
+
 - variable: mysql.enabled
   label: Enable Redmysqlis
   type: boolean
   default: true
   group: mysql
+
+- variable: usePassword
+  default: "true"
+  description: "Use password authentication"
+  type: boolean
+  required: true
+  label: Enable Redis Password
+  show_subquestion_if: true
+  group: "Redis Master Settings"
+  subquestions:
+  - variable: password
+    default: ""
+    required: true
+    description: "password will be auto-generated if not specified"
+    type: password
+    label: Redis Password
