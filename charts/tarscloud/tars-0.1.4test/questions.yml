@@ -1,0 +1,19 @@
+labels:
+  io.cattle.role: project # options are cluster/project
+  io.rancher.app_min_version: 9.0.2
+categories:
+- KeyValue
+- Database
+questions:
+- variable: tars.replicas
+  default: 2
+  description: "tars pod count"
+  label: Specify the number of Tars Master Pods
+  type: int
+- variable: tarsnode.replicas
+  default: 3
+  description: "tarsnode pod count"
+  label: Specify the number of Tarsnode Pods
+  type: int
+
+
