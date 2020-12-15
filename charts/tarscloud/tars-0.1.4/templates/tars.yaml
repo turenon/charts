@@ -1,3 +1,4 @@
+
 apiVersion: v1
 kind: Service
 metadata:
@@ -11,7 +12,9 @@ spec:
     app: tars
   clusterIP: None
   type: ClusterIP
+
 ---
+
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
@@ -110,7 +113,9 @@ spec:
           hostPath:
             path: {{.Values.tars.data}}/{{.Values.tars.namespace}}
             type: DirectoryOrCreate
+
 ---
+
 apiVersion: v1
 kind: Service
 metadata:
@@ -123,7 +128,10 @@ spec:
   selector:
     app: tars
   type: ClusterIP
+
+ 
 ---
+
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
@@ -136,7 +144,10 @@ spec:
       - backend:
           serviceName: ingress-web-tars
           servicePort: 3000
+
+
 ---
+
 apiVersion: v1
 kind: Service
 metadata:
@@ -149,7 +160,10 @@ spec:
   selector:
     app: tars
   type: ClusterIP
+
+ 
 ---
+
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
@@ -162,7 +176,9 @@ spec:
       - backend:
           serviceName: ingress-auth-tars
           servicePort: 3001
+
 ---
+
 apiVersion: v1
 kind: Service
 metadata:
@@ -176,7 +192,9 @@ spec:
     app: tars-node
   clusterIP: None
   type: ClusterIP
+
 ---
+
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
