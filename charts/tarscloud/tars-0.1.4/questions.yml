@@ -42,28 +42,3 @@ questions:
     label: Enable Mysql Metrics Exporter
     type: boolean
     group: "mysql Settings"
-
-
-
-
-- variable: mysql.enabled
-  label: Enable Redmysqlis
-  type: boolean
-  default: true
-  group: mysql
-
-- variable: usePassword
-  default: "true"
-  description: "Use password authentication"
-  type: boolean
-  required: true
-  label: Enable Redis Password
-  show_subquestion_if: true
-  group: "Redis Master Settings"
-  subquestions:
-  - variable: password
-    default: ""
-    required: true
-    description: "password will be auto-generated if not specified"
-    type: password
-    label: Redis Password
