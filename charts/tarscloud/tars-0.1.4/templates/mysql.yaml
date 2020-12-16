@@ -1,3 +1,4 @@
+{{- if .Values.mysql.enabled }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -11,8 +12,10 @@ data:
     server-id=1
     log-bin
     expire_logs_days = 30
----
+{{- end }}
 
+---
+{{- if .Values.mysql.enabled }}
 apiVersion: v1
 kind: Service
 metadata:
@@ -26,14 +29,15 @@ spec:
   clusterIP: None
   selector:
     app: mysql
+{{- end }}
 
 ---
 
+{{- if .Values.mysql.enabled }}
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: mysql
-{{- if .Values.mysql.enabled }}
 spec:
   serviceName: mysql-service
   selector:
