@@ -33,6 +33,7 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: mysql
+{{- if .Values.mysql.enabled }}
 spec:
   serviceName: mysql-service
   selector:
@@ -107,3 +108,4 @@ spec:
         hostPath:
           path: {{.Values.mysql.data}}/{{.Values.tars.namespace}}
           type: DirectoryOrCreate
+{{- end }}
