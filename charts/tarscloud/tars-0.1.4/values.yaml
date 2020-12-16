@@ -39,6 +39,8 @@ tarsnode:
   #   memory: 128Mi
 
 mysql:
+  enabled: false
+
   image: mysql:5.6
   rebuild: "false"
   password: "Tars@2019"

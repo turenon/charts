@@ -30,7 +30,7 @@ questions:
   show_subquestion_if: true
   group: "mysql Settings"
   subquestions:
-  - variable: password
+  - variable: mysql.password
     default: ""
     required: true
     description: "password will be auto-generated if not specified"
