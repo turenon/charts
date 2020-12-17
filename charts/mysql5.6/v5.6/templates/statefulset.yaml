@@ -15,13 +15,13 @@ spec:
     spec:
       initContainers:
       - name: init-mysql
-        image: {{.Values.mysql.image}} 
+        image: {{.Values.image}} 
         command:
           - bash
           - "-c"
           - |
             cp /mnt/config-map/my.cnf /mnt/conf.d/
-            if [ "{{.Values.mysql.rebuild}}" == "true" ]; then
+            if [ "{{.Values.rebuild}}" == "true" ]; then
                 rm -rf /var/lib/mysql/*
             fi
         volumeMounts:
@@ -33,12 +33,12 @@ spec:
             mountPath: /var/lib/mysql
       containers:
       - name: mysql
-        image: {{.Values.mysql.image}}
+        image: {{.Values.image}}
         resources:
           {{- toYaml .Values.resources | nindent 10 }}
         env:
         - name: MYSQL_ROOT_PASSWORD
-          value: {{.Values.mysql.password}}
+          value: {{.Values.password}}
         ports:
         - name: mysql
           containerPort: 3306 
@@ -74,5 +74,5 @@ spec:
           name: mysql
       - name: mysql-data
         hostPath:
-          path: {{.Values.mysql.data}}
+          path: {{.Values.data}}
           type: DirectoryOrCreate
