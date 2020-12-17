@@ -1,0 +1,14 @@
+questions:
+# mysql
+- variable: password
+  default: ""
+  required: true
+  description: "password will be auto-generated if not specified"
+  type: password
+  label: mysql root Password
+  group: mysql Settings
+- variable: data
+  default: "/data/mysql-data"
+  type: string
+  label: mysql-data hostpath
+  group: mysql Settings
