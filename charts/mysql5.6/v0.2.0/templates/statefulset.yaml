@@ -82,3 +82,4 @@ spec:
           claimName: {{ .Values.persistence.existingClaim | default (include "mysql.fullname" .) }}
       {{- else }}
         emptyDir: {}
+      {{- end -}}
