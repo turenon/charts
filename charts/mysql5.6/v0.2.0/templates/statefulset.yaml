@@ -1,0 +1,84 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: mysql
+spec:
+  serviceName: mysql-service
+  selector:
+    matchLabels:
+      app: mysql
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: mysql
+    spec:
+      initContainers:
+      - name: init-mysql
+        image: {{.Values.image}} 
+        command:
+          - bash
+          - "-c"
+          - |
+            cp /mnt/config-map/my.cnf /mnt/conf.d/
+            if [ "{{.Values.rebuild}}" == "true" ]; then
+                rm -rf /var/lib/mysql/*
+            fi
+        volumeMounts:
+          - name: conf
+            mountPath: /mnt/conf.d
+          - name: config-map
+            mountPath: /mnt/config-map
+          - name: mysql-data
+            mountPath: /var/lib/mysql
+            {{- if .Values.persistence.subPath }}
+            subPath: {{ .Values.persistence.subPath }}
+            {{- end }}
+
+      containers:
+      - name: mysql
+        image: {{.Values.image}}
+        resources:
+          {{- toYaml .Values.resources | nindent 10 }}
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: {{.Values.password}}
+        ports:
+        - name: mysql
+          containerPort: 3306 
+        volumeMounts:
+        - name: mysql-data
+          mountPath: /var/lib/mysql
+        - name: config-map
+          mountPath: /mnt/config-map
+        - name: conf
+          mountPath: /etc/mysql/conf.d
+        - name: localtime
+          mountPath: /etc/localtime
+        livenessProbe:
+          exec:
+            command: ["mysqladmin", "ping"]
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+        readinessProbe:
+          exec:
+            command: ["mysql", "-h", "127.0.0.1", "-u", "root", "-P", "3306", "-p{{.Values.password}}", "-e", "SELECT 1"]
+          initialDelaySeconds: 3
+          periodSeconds: 2
+          timeoutSeconds: 1
+      volumes:
+      - name: localtime
+        hostPath:
+         path: /etc/localtime
+      - name: conf
+        emptyDir: {}
+      - name: config-map
+        configMap:
+          name: mysql
+      - name: mysql-data
+      {{- if .Values.persistence.enabled }}
+        persistentVolumeClaim:
+          claimName: {{ .Values.persistence.existingClaim | default (include "mysql.fullname" .) }}
+      {{- else }}
+        emptyDir: {}
