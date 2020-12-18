@@ -1,4 +1,4 @@
-apiVersion: v2
+apiVersion: v1
 name: nd-mysql5.6
 description: A mysql Helm chart for Kubernetes
 type: application
