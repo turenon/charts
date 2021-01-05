@@ -6,8 +6,20 @@ metadata:
     chart: {{ template "emqx.chart" . }}
   name: {{ template "emqx.fullname" . }}
 data:
-  emqx_dashboard.conf: |-
-
   acl.conf: |-
-
+    {allow, {user, "dashboard"}, subscribe, ["$SYS/#"]}.
+    {allow, {ipaddr, "127.0.0.1"}, pubsub, ["$SYS/#", "#"]}.
+    {deny, all, subscribe, ["$SYS/#", {eq, "#"}]}.
+    {allow, all}.
   emqx_auth_username.conf: |-
+    auth.user.1.username = cafa_client_beta_cn
+    auth.user.1.password = cafaclient2020.beta_cn
+    auth.user.2.username = cafa_svr_beta_cn
+    auth.user.2.password = cafasvr2020.beta_cn
+  emqx_dashboard.conf: |-
+    dashboard.api.providers = emqx_management,emqx_dashboard
+    dashboard.default_user.login = admin
+    dashboard.default_user.password = 3dcpadmin
+    dashboard.listener.http = 18083
+    dashboard.listener.http.acceptors = 4
+    dashboard.listener.http.max_clients = 51
