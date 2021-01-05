@@ -1,0 +1,9 @@
+apiVersion: v1
+name: emqx
+version: 3.0.1
+appVersion: 3.0.1
+description: is a massively scalable, highly extensible distributed MQTT message broker written in Erlang/OTP.
+keywords:
+- mqtt
+- emqx
+
