@@ -1,7 +1,7 @@
 questions:
 
 # host
-- variable: host
+- variable: tars.host
   default: domain.com
   label: tars ingress host
   type: string

@@ -83,9 +83,9 @@ spec:
             /usr/local/tars/cpp/deploy/docker-init.sh
           env:
           - name: USER_CENTER_HOST
-            value: http://tars-auth.{{.Values.tars.namespace}}.{{.Values.tars.host}}:{{.Values.tars.port}}
+            value: http://tars-auth.{{ .Release.Namespace}}.{{.Values.tars.host}}:{{.Values.tars.port}}
           - name: COOKIE_DOMAIN
-            value: .{{.Values.tars.namespace}}.{{.Values.tars.host}}
+            value: .{{ .Release.Namespace}}.{{.Values.tars.host}}
           - name: TARS_WEB_STRICT
             value: "{{.Values.tars.strict}}"
           - name: MYSQL_HOST
@@ -113,7 +113,7 @@ spec:
             path: /etc/localtime 
         - name: data
           hostPath:
-            path: {{.Values.tars.data}}/{{.Values.tars.namespace}}
+            path: {{.Values.tars.data}}/{{ .Release.Namespace}}
             type: DirectoryOrCreate
 
 ---
@@ -153,7 +153,7 @@ metadata:
   name: http
 spec:
   rules:
-  - host: api.{{.Values.tars.namespace}}.{{.Values.tars.host}} 
+  - host: api.{{ .Release.Namespace}}.{{.Values.tars.host}} 
     http:
       paths:
       - backend:
@@ -171,7 +171,7 @@ metadata:
         nginx.org/proxy-connect-timeout: "30s"
 spec:
   rules:
-  - host: tars-web.{{.Values.tars.namespace}}.{{.Values.tars.host}}
+  - host: tars-web.{{ .Release.Namespace}}.{{.Values.tars.host}}
     http:
       paths:
       - backend:
@@ -203,7 +203,7 @@ metadata:
   name: auth-tars
 spec:
   rules:
-  - host: tars-auth.{{.Values.tars.namespace}}.{{.Values.tars.host}}
+  - host: tars-auth.{{ .Release.Namespace}}.{{.Values.tars.host}}
     http:
       paths:
       - backend:
@@ -279,5 +279,5 @@ spec:
             path: /etc/localtime 
         - name: data
           hostPath:
-            path: {{.Values.tars.data}}/{{.Values.tars.namespace}}
+            path: {{.Values.tars.data}}/{{ .Release.Namespace}}
             type: DirectoryOrCreate
