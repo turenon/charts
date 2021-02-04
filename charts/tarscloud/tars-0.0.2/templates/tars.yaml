@@ -92,6 +92,8 @@ spec:
             value: "{{.Values.tars.mysqlHost}}"
           - name: MYSQL_USER
             value: "{{.Values.tars.mysqlUser}}"
+          - name: MYSQL_PORT
+            value: "{{.Values.tars.mysqlPort}}"
           - name: MYSQL_ROOT_PASSWORD
             value: "{{.Values.tars.mysqlRootPassword}}"
           - name: INET

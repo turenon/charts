@@ -26,6 +26,10 @@ questions:
   default: mysqlUser
   type: string
   group: tars
+- variable: tars.mysqlPort
+  default: mysqlPort
+  type: string
+  group: tars
 - variable: tars.mysqlRootPassword
   default: mysqlRootPassword
   type: string
