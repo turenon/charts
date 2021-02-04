@@ -5,14 +5,14 @@
 tars:
   namespace: tars
   data: /data/tars-data
-  image: tarscloud/framework:v2.4.1
+  image: harbor.test.101nd.cn/ai-teacher/tars-framework:v2.5.1
   replicas: 2
   host: test.101nd.cn
   port: 80
   strict: "false"
   mysqlHost: 172.24.140.217
   mysqlUser: tarsAdmin
-  mysqlRootPassword : Tars@2019
+  mysqlRootPassword : "Tars@2019"
   pullPolicy: IfNotPresent
   pullPolicy: IfNotPresent
   resources: {}
@@ -27,7 +27,7 @@ tars:
   #   cpu: 100m
   #   memory: 128Mi
 tarsnode:
-  image: tarscloud/tars-node:stable
+  image: harbor.test.101nd.cn/ai-teacher/tars-node:v2.0
   replicas: 3
   pullPolicy: IfNotPresent
   resources: {}
