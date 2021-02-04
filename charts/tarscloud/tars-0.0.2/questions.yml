@@ -28,7 +28,7 @@ questions:
   group: tars
 - variable: tars.mysqlPort
   default: mysqlPort
-  type: string
+  type: int
   group: tars
 - variable: tars.mysqlRootPassword
   default: mysqlRootPassword
