@@ -93,7 +93,7 @@ spec:
           - name: MYSQL_USER
             value: "{{.Values.tars.mysqlUser}}"
           - name: MYSQL_PORT
-            value: "{{.Values.tars.mysqlPort}}"
+            value: {{.Values.tars.mysqlPort}}
           - name: MYSQL_ROOT_PASSWORD
             value: "{{.Values.tars.mysqlRootPassword}}"
           - name: INET
@@ -147,12 +147,24 @@ spec:
   selector:
     app: tars-node
   type: ClusterIP
+
+---
+apiVersion: v1
+data:
+  enable-underscores-in-headers: "true"
+kind: ConfigMap
+metadata:
+  name: nginx-configuration
+  labels:
+    app: ingress-nginx
 ---
 
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
   name: http
+  annotations:
+    "nginx.org/proxy-pass-headers": "sdp_app_id"
 spec:
   rules:
   - host: api.{{ .Release.Namespace}}.{{.Values.tars.host}} 
