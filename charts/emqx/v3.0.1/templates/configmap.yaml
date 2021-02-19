@@ -1,25 +1,12 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
+  name: {{ include "emqx.fullname" . }}-env
+  namespace: {{ .Release.Namespace }}
   labels:
-    app: {{ template "emqx.name" . }}
-    chart: {{ template "emqx.chart" . }}
-  name: {{ template "emqx.fullname" . }}
+    app.kubernetes.io/name: {{ include "emqx.name" . }}
+    helm.sh/chart: {{ include "emqx.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
 data:
-  acl.conf: |-
-    {allow, {user, "dashboard"}, subscribe, ["$SYS/#"]}.
-    {allow, {ipaddr, "127.0.0.1"}, pubsub, ["$SYS/#", "#"]}.
-    {deny, all, subscribe, ["$SYS/#", {eq, "#"}]}.
-    {allow, all}.
-  emqx_auth_username.conf: |-
-    auth.user.1.username = test1
-    auth.user.1.password = test1
-    auth.user.2.username = test2
-    auth.user.2.password = test2
-  emqx_dashboard.conf: |-
-    dashboard.api.providers = emqx_management,emqx_dashboard
-    dashboard.default_user.login = admin
-    dashboard.default_user.password = admin123
-    dashboard.listener.http = 18083
-    dashboard.listener.http.acceptors = 4
-    dashboard.listener.http.max_clients = 51
+  {{- toYaml .Values.emqxConfig | nindent 2 }}

@@ -1,7 +1,7 @@
 apiVersion: v1
 name: emqx
-version: 3.0.1
-appVersion: 3.0.1
+version: v4.0.0
+appVersion: v3.0.1
 description: A Helm chart for EMQ X
 type: application
 keywords:

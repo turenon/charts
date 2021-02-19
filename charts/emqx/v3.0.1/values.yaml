@@ -1,34 +1,26 @@
+affinity: {}
+emqxConfig:
+  EMQX_CLUSTER__K8S__ADDRESS_TYPE: hostname
+  EMQX_CLUSTER__K8S__APISERVER: https://kubernetes.default.svc:443
+  EMQX_CLUSTER__K8S__SUFFIX: svc.cluster.local
+emqxLicneseSecretName: null
 image:
-  registry: docker.io
-  repository: ranchercharts/bitnami-redis
-  tag: 5.0.5-debian-9-r95
   pullPolicy: IfNotPresent
-
-cluster:
-  enabled: true
-  nodeCount: 3
-
-configmap:
-  emqx_dashboard  
-cat << EOF >emqx_dashboard.conf
-dashboard.api.providers = emqx_management,emqx_dashboard
-dashboard.default_user.login = admin
-dashboard.default_user.password = 3dcpadmin
-dashboard.listener.http = 18083
-dashboard.listener.http.acceptors = 4
-dashboard.listener.http.max_clients = 51
-EOF
-
-cat << EOF >acl.conf
-{allow, {user, "dashboard"}, subscribe, ["$SYS/#"]}.
-{allow, {ipaddr, "127.0.0.1"}, pubsub, ["$SYS/#", "#"]}.
-{deny, all, subscribe, ["$SYS/#", {eq, "#"}]}.
-{allow, all}.
-EOF
-
-cat << EOF >emqx_auth_username.conf
-auth.user.1.username = cafa_client_beta_cn
-auth.user.1.password = cafaclient2020.beta_cn
-auth.user.2.username = cafa_svr_beta_cn
-auth.user.2.password = cafasvr2020.beta_cn
-EOF
+  repository: emqx/emqx
+ingress:
+  annotations: {}
+  enabled: false
+  hosts:
+  - chart-example.local
+  path: /
+  tls: []
+nodeSelector: {}
+persistence:
+  accessMode: ReadWriteOnce
+  enabled: false
+  size: 20Mi
+replicaCount: 3
+resources: {}
+service:
+  type: ClusterIP
+tolerations: []
