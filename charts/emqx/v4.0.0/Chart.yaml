@@ -1,6 +1,10 @@
 apiVersion: v2
+name: emqx
+version: v4.0.0
 appVersion: v4.0.0
 description: A Helm chart for EMQ X
-name: emqx
 type: application
-version: v4.0.0
+keywords:
+- mqtt
+- emqx
+
