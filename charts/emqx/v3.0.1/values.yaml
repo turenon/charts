@@ -1,8 +1,14 @@
 affinity: {}
+emqxAclConfig: |
+  {allow, {user, "emqxuser1"}, subscribe, ["#"]}. {allow, {user, "emqxuser2"}, pubsub, ["#"]}. {deny, {user,"emqxuser1", pubsub,["#"]}.
 emqxConfig:
-  EMQX_CLUSTER__K8S__ADDRESS_TYPE: hostname
+  EMQX_ALLOW_ANONYMOUS: 'false'
+  EMQX_LOADED_PLUGINS: 'emqx_management,emqx_auth_username,emqx_dashboard,emqx_recon,emqx_retainer'
   EMQX_CLUSTER__K8S__APISERVER: https://kubernetes.default.svc:443
-  EMQX_CLUSTER__K8S__SUFFIX: svc.cluster.local
+  EMQX_AUTH__USER__1__USERNAME: emqxuser1
+  EMQX_AUTH__USER__1__PASSWORD: emqxuser1
+  EMQX_DASHBOARD__DEFAULT__USER__LOGIN: admin
+  EMQX_DASHBOARD__DEFAULT__USER__PASSWORD: 3dcpadmin
 emqxLicneseSecretName: null
 image:
   pullPolicy: IfNotPresent
@@ -10,8 +16,7 @@ image:
 ingress:
   annotations: {}
   enabled: false
-  hosts:
-  - chart-example.local
+  hosts: chart-example.local
   path: /
   tls: []
 nodeSelector: {}

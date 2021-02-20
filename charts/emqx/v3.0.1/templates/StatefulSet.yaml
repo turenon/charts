@@ -47,6 +47,12 @@ spec:
         app.kubernetes.io/instance: {{ .Release.Name }}
     spec:
       volumes:
+      - name: emqx-acl
+        configMap:
+          name: {{ include "emqx.fullname" . }}-acl
+          items:
+          - key: acl.conf
+            path: acl.conf
       {{- if not .Values.persistence.enabled }}
       - name: emqx-data
         emptyDir: {}
@@ -72,7 +78,7 @@ spec:
           ports:
           - containerPort: {{ .Values.emqxConfig.EMQX_LISTENER__TCP__EXTERNAL | default 1883 }}
           - containerPort: {{ .Values.emqxConfig.EMQX_LISTENER__SSL__EXTERNAL | default 8883 }}
-          - containerPort: {{ .Values.emqxConfig.EMQX_MANAGEMENT__LISTENER__HTTP | default 8081 }}
+          - containerPort: {{ .Values.emqxConfig.EMQX_MANAGEMENT__LISTENER__HTTP | default 8080 }}
           - containerPort: {{ .Values.emqxConfig.EMQX_LISTENER__WS__EXTERNAL | default 8083 }}
           - containerPort: {{ .Values.emqxConfig.EMQX_LISTENER__WSS__EXTERNAL | default 8084 }}
           - containerPort: {{ .Values.emqxConfig.EMQX_DASHBOARD__LISTENER__HTTP | default 18083 }}
@@ -95,6 +101,9 @@ spec:
           volumeMounts:
           - name: emqx-data
             mountPath: "/opt/emqx/data/mnesia"
+          - name: emqx-acl
+            mountPath: "/opt/emqx/etc/acl.conf"
+            subPath: "acl.conf"
           {{ if .Values.emqxLicneseSecretName  }}
           - name: emqx-license
             mountPath: "/opt/emqx/etc/emqx.lic"
@@ -104,7 +113,7 @@ spec:
           readinessProbe:
             httpGet:
               path: /status
-              port: {{ .Values.emqxConfig.EMQX_MANAGEMENT__LISTENER__HTTP | default 8081 }}
+              port: {{ .Values.emqxConfig.EMQX_MANAGEMENT__LISTENER__HTTP | default 8080 }}
             initialDelaySeconds: 5
             periodSeconds: 5
     {{- with .Values.nodeSelector }}
