@@ -1,38 +1,12 @@
-# Introduction
-This chart bootstraps an emqx deployment on a Kubernetes cluster using the Helm package manager. 
+# 介绍
+使用Helm包管理器在Kubernetes集群上部署emqx集群。
 
-# Prerequisites
-+ Kubernetes 1.6+
-+ Helm
-
-# Installing the Chart
-To install the chart with the release name `my-emqx`:
-
-+   From github 
-    ```
-    $ git clone https://github.com/emqx/emqx-rel.git
-    $ cd emqx-rel/deploy/charts/emqx
-    $ helm install my-emqx .
-    ```
-
-+   From chart repos
-    ```
-    helm repo add emqx https://repos.emqx.io/charts
-    helm install my-emqx emqx/emqx
-    ```
-    > If you want to install an unstable version, you need to add `--devel` when you execute the `helm install` command.
-
-# Uninstalling the Chart
-To uninstall/delete the `my-emqx` deployment:
-```
-$ helm del  my-emqx
-```
-
-# Configuration
-The following table lists the configurable parameters of the emqx chart and their default values.
+# 配置
+可配置参数及其默认值如下表所示
 
 | Parameter  | Description | Default Value |
 | ---        |  ---        | ---           |
+| `ingress.hosts`| emqx dashboard and websocket ingress hosts|`chart-example.local`|
 | `replicaCount` | It is recommended to have odd number of nodes in a cluster, otherwise the emqx cluster cannot be automatically healed in case of net-split. |3|
 | `image.repository` | EMQ X Image name |emqx/emqx|
 | `image.pullPolicy`  | Global Docker registry secret names as an array |IfNotPresent|
@@ -47,3 +21,11 @@ The following table lists the configurable parameters of the emqx chart and thei
 | `affinity` | Map of node/pod affinities |`{}`|
 | `service.type`  | Emqx cluster service type. |ClusterIP|
 | `emqxConfig` | Emqx configuration item, see the [documentation](https://github.com/emqx/emqx-docker#emq-x-configuration) | |
+| `emqxAclConfig`| emqx acl configuration item| |
+
+# 常用配置
+- replicaCount
+- ingress.hosts
+- nodeSelector
+- emqxAclConfig
+- emqxConfig

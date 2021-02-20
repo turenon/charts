@@ -15,7 +15,7 @@ image:
   repository: emqx/emqx
 ingress:
   annotations: {}
-  enabled: false
+  enabled: true
   hosts: chart-example.local
   path: /
   tls: []

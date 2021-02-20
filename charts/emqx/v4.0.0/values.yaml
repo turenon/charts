@@ -9,6 +9,8 @@ emqxConfig:
   EMQX_CLUSTER__K8S__SUFFIX: svc.cluster.local
   EMQX_AUTH__USER__1__USERNAME: emqxuser1
   EMQX_AUTH__USER__1__PASSWORD: emqxuser1
+  EMQX_AUTH__USER__2__USERNAME: emqxuser2
+  EMQX_AUTH__USER__2__PASSWORD: emqxuser2
   EMQX_DASHBOARD__DEFAULT__USER__LOGIN: admin
   EMQX_DASHBOARD__DEFAULT__USER__PASSWORD: 3dcpadmin
 emqxLicneseSecretName: null
@@ -17,9 +19,8 @@ image:
   repository: emqx/emqx
 ingress:
   annotations: {}
-  enabled: false
-  hosts:
-  - chart-example.local
+  enabled: true
+  hosts: chart-example.local
   path: /
   tls: []
 nodeSelector: {}
