@@ -1,0 +1,21 @@
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: {{ .Values.ingress.hosts }}
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
+spec:
+  rules:
+  - host: {{ .Values.ingress.hosts }}
+    http:
+      paths:
+      - backend:
+          serviceName: {{ include "emqx.fullname" . }}-headless
+          servicePort: {{ .Values.emqxConfig.EMQX_DASHBOARD__LISTENER__HTTP | default 18083 }}
+        path: /
+      - backend:
+          serviceName: {{ include "emqx.fullname" . }}-headless
+          servicePort: {{ .Values.emqxConfig.EMQX_LISTENER__WS__EXTERNAL | default 8083 }}
+        path: /mqtt
